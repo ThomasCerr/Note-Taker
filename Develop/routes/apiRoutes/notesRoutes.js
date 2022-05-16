@@ -2,18 +2,13 @@
 const fs = require("fs");
 const uuid = require('uuid')
 const { getNotes } = require('../../lib/notes');
-// const { notes } = require('../data/db');
 const router = require('express').Router();
 const path = require("path");
 const db = require("../../db/db.json");
 let jsonData = [];
 
 var refreshNotes = router.get('/api/notes', (req, res) => {
-  // set id based on what the next index of the array will be
-  // req.body.id = notes.length.toString();
-
-  //   const note = createNewNote(req.body, notes);
-  //   res.json(note);
+  
 res.json(getNotes())
   
 });
@@ -25,6 +20,7 @@ router.post('/api/notes', (req, res) => {
      id: uuid.v4(),
      title: req.body.title,
      text: req.body.text,
+     status: 'active'
    }
   jsonData.push(newNote);
  let data = JSON.stringify(jsonData);
@@ -33,6 +29,17 @@ router.post('/api/notes', (req, res) => {
    window.location.reload();
   });
 
- 
+router.delete('/api/notes/:id'), (req,res) =>{
+const found = db.some(db => db.id === parseInt(req.params.id));
+
+if (found) {
+  res.json({
+    msg: 'Notes Deleted', 
+    notes: db.filter(db=>db.id !== parseInt(req.params.id))
+  });
+} else {
+res.status(400).json({msg:`No data with the id of ${req.params.id}`});
+
+}};
 
   module.exports= router
