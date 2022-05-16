@@ -29,7 +29,7 @@ router.post('/api/notes', (req, res) => {
    window.location.reload();
   });
 
-router.delete('/api/notes/:id'), (req,res) =>{
+router.delete('/api/notes/:id', (req,res) =>{
 const found = db.some(db => db.id === parseInt(req.params.id));
 
 if (found) {
@@ -40,6 +40,6 @@ if (found) {
 } else {
 res.status(400).json({msg:`No data with the id of ${req.params.id}`});
 
-}};
+}});
 
   module.exports= router
