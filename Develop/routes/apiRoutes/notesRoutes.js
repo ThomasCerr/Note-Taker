@@ -30,12 +30,12 @@ router.post('/api/notes', (req, res) => {
   });
 
 router.delete('/api/notes/:id', (req,res) =>{
-const found = db.some(db => db.id === parseInt(req.params.id));
+const found = db.some(db => db.id === req.params.id);
 
 if (found) {
   res.json({
     msg: 'Notes Deleted', 
-    notes: db.filter(db=>db.id !== parseInt(req.params.id))
+    notes: db.filter(db=>db.id !== req.params.id)
   });
 } else {
 res.status(400).json({msg:`No data with the id of ${req.params.id}`});
