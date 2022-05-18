@@ -1,17 +1,19 @@
 
 const fs = require("fs");
 const uuid = require('uuid')
-const { getNotes } = require('../../lib/notes');
+const { getNotes,deleteNotes,addNote } = require('../../lib/notes');
 const router = require('express').Router();
 const path = require("path");
-const db = require("../../db/db.json");
-let jsonData = [];
 
-var refreshNotes = router.get('/api/notes', (req, res) => {
+
+
+router.get('/api/notes', (req, res) => {
   
 res.json(getNotes())
-  
+ return res.status(200); 
 });
+
+
 router.post('/api/notes', (req, res) => {
   if(!req.body.title || !req.body.text) {
     return res.status(400).json({ msg: 'Please include a title and text'})
@@ -22,24 +24,23 @@ router.post('/api/notes', (req, res) => {
      text: req.body.text,
      status: 'active'
    }
-  jsonData.push(newNote);
- let data = JSON.stringify(jsonData);
 
-   fs.writeFileSync(path.join(__dirname + '../../../db/db.json'), data );
-   window.location.reload();
+   
+  var data = JSON.stringify(addNote(newNote))
+ fs.writeFileSync(path.join(__dirname + '../../../db/db.json'), data);
+   res.sendFile(path.join(__dirname, '../../public/notes.html'));
+   return res.status(200)
   });
 
+  
 router.delete('/api/notes/:id', (req,res) =>{
-const found = db.some(db => db.id === req.params.id);
+  fs.writeFileSync(path.join(__dirname + '../../../db/db.json'),JSON.stringify(deleteNotes(req.params.id)));
+  res.sendFile(path.join(__dirname, '../../public/notes.html'));
+ 
+  return res.status(200);
+  
 
-if (found) {
-  res.json({
-    msg: 'Notes Deleted', 
-    notes: db.filter(db=>db.id !== req.params.id)
-  });
-} else {
-res.status(400).json({msg:`No data with the id of ${req.params.id}`});
-
-}});
+}
+);
 
   module.exports= router
