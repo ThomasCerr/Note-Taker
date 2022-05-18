@@ -36,3 +36,5 @@ THEN I am presented with empty fields to enter a new note title and the note’s
 ## Mockup
 
 <img src= https://github.com/ThomasCerr/Note-Taker/blob/main/mockup/mockup-example.PNG>
+
+Link to deployed application: https://note-taker-tc7.herokuapp.com/
