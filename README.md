@@ -35,4 +35,4 @@ THEN I am presented with empty fields to enter a new note title and the note’s
 ```
 ## Mockup
 
-
+<img>https://github.com/ThomasCerr/Note-Taker/blob/main/mockup/mockup-example.PNG</img>
